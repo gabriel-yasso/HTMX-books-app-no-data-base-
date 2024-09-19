@@ -1,0 +1,79 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <style>
+      @import
+      url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+      body { padding: 20px; font-family: "Rubik"; color: #333; } main { width:
+      600px; margin: 0 auto; } h1, h2, h3, header { text-align: center; } header
+      { padding-bottom: 10px; margin-bottom: 30px; } .book-list > button {
+      width: 100px; margin: 20px auto; display: block; } .book-list ul {
+      padding: 10px 20px; list-style-type: none; background: #f4f4f4;
+      border-radius: 8px; } .book-list li { border-bottom: 1px solid #e9e9e9;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 0; } .book-list li > div { margin-right: auto; } .book-list
+      li:last-child { border: 0; } .book-list li h3, .books li p { text-align:
+      left; margin-bottom: 0px; margin-top: 4px; } .book-list li p { color:
+      #777; } input, button { padding: 10px; font-family: "Rubik";
+      border-radius: 4px; box-sizing: border-box; } form { display: flex; gap:
+      10px; width: 100%; } form button { margin-left: auto; } form input {
+      flex-grow: 1; border: 1px solid #e9e9e9; border-radius: 4px; }
+      .add-book-form { margin-top: 60px; } button { background: #ef4444; color:
+      white; border: 0; }
+
+    </style>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.2"
+      integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <header>
+      <h1>My Reading List</h1>
+    </header>
+
+    <main>
+
+      <div class="search" style="text-align: center;">
+        <input
+          type="search"
+          name="search"
+          placeholder="search books by title..."
+          hx-post="/books/search"
+          hx-trigger="keyup changed delay:300ms"  {{!-- important --}}
+          hx-target=".book-list"
+        />
+      </div>
+
+      <div class="book-list">
+        <button hx-get="/books" hx-target=".book-list">show books</button>
+      </div>
+
+      <div class="add-book-form">
+        <h2>What do you want to read?</h2>
+        <form
+          hx-post="/books"
+          hx-target=".book-list"
+          hx-on:htmx:before-request="document.querySelector('form').reset()"
+        >
+          <input type="text" name="title" placeholder="title" required />
+          <input type="text" name="author" placeholder="author" required />
+          <button>Add book</button>
+        </form>
+
+      </div>
+      <hr />
+      <div>
+        <h2>inter the id of the book you are searching for</h2>
+        <form hx-post="single-book" hx-target=".single-book">
+          <input type="text" name="id" placeholder="id" required />
+          <button>search</button>
+        </form>
+      </div>
+      <div class="single-book"></div>
+    </main>
+  </body>
+</html>
